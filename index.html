@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>My iPod - Ultimate Pixel Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --lcd-bg: #8ba870;
+        --lcd-text: #1a1e12;
+        --body-bg: #e0e0e0;
+        --wheel-bg: #f5f5f5;
+        --wheel-text: #888;
+        --center-btn-bg: #eeeeee;
+        --chasis-border: #999;
+      }
+
+      /* Skin: Classic (White) */
+      body.skin-classic {
+        --body-bg: #f8f8f8;
+        --wheel-bg: #ffffff;
+        --wheel-text: #aaa;
+        --center-btn-bg: #f0f0f0;
+        --chasis-border: #ccc;
+      }
+
+      /* Skin: Video (Black) */
+      body.skin-video {
+        --body-bg: #151515;
+        --wheel-bg: #0a0a0a;
+        --wheel-text: #444;
+        --center-btn-bg: #222;
+        --chasis-border: #333;
+      }
+
+      body.backlight-on {
+        --lcd-bg: #a3c189;
+      }
+
+      * {
+        image-rendering: pixelated;
+        -webkit-font-smoothing: none;
+        user-select: none;
+        touch-action: none;
+      }
+
+      body {
+        background-color: #050505;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: 'Silkscreen', cursive;
+        color: var(--lcd-text);
+        transition: background 0.5s ease;
+      }
+
+      .ipod-body {
+        width: 100vw;
+        height: 100vh;
+        max-width: 400px;
+        max-height: 700px;
+        background: var(--body-bg);
+        border: 1px solid var(--chasis-border);
+        border-radius: 45px;
+        display: flex;
+        flex-direction: column;
+        padding: 25px;
+        box-shadow: 
+          0 60px 100px -30px rgba(0,0,0,0.9),
+          inset 0 2px 4px rgba(255,255,255,0.5),
+          inset 0 -2px 4px rgba(0,0,0,0.2);
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .ipod-body::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(125deg, rgba(255,255,255,0.08) 0%, transparent 40%, rgba(0,0,0,0.05) 100%);
+        border-radius: 45px;
+        pointer-events: none;
+      }
+
+      .pixel-viewport {
+        flex: 0 0 45%;
+        background-color: var(--lcd-bg);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 
+          inset 0 0 20px rgba(0,0,0,0.3),
+          0 0 0 12px #000;
+        border-radius: 6px;
+        margin-bottom: 30px;
+        border: 2px solid #111;
+      }
+
+      .hardware-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 100;
+        pointer-events: none;
+        background-image: 
+          linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        background-size: 2px 2px;
+      }
+
+      .glass-reflection {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.02) 100%);
+        pointer-events: none;
+        z-index: 101;
+      }
+
+      .flicker-overlay {
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(0deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 3px);
+        pointer-events: none;
+        z-index: 99;
+      }
+
+      .menu-selected {
+        background-color: var(--lcd-text) !important;
+        color: var(--lcd-bg) !important;
+      }
+
+      .ghosting-text {
+        transition: color 0.15s ease, background-color 0.15s ease;
+      }
+
+      .wheel-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .wheel-ring {
+        width: 260px;
+        height: 260px;
+        background: var(--wheel-bg);
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 50%;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 
+          0 15px 35px rgba(0,0,0,0.2),
+          inset 0 1px 2px rgba(255,255,255,0.8),
+          inset 0 -1px 2px rgba(0,0,0,0.05);
+      }
+
+      .center-btn {
+        width: 85px;
+        height: 85px;
+        background: var(--center-btn-bg);
+        border: 1px solid rgba(0,0,0,0.05);
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 210;
+        box-shadow: 
+          0 4px 8px rgba(0,0,0,0.1),
+          inset 0 1px 2px rgba(255,255,255,1);
+        transition: transform 0.1s;
+      }
+      .center-btn:active { transform: scale(0.97); }
+
+      .nav-label {
+        position: absolute;
+        color: var(--wheel-text);
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        pointer-events: none;
+      }
+
+      .engraved-text {
+        color: rgba(0,0,0,0.3);
+        text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+      }
+
+      .progress-bar-bg {
+        height: 10px;
+        background: transparent;
+        border: 1px solid var(--lcd-text);
+        position: relative;
+        overflow: hidden;
+      }
+      .progress-bar-fill {
+        height: 100%;
+        background: var(--lcd-text);
+        transition: width 0.1s linear;
+      }
+
+      .alphabet-bubble {
+        background: var(--lcd-text);
+        color: var(--lcd-bg);
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 60px;
+        font-weight: 900;
+        border: 4px solid var(--lcd-bg);
+        box-shadow: 0 0 0 2px var(--lcd-text);
+        border-radius: 4px;
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://esm.sh/react@^19.2.4",
+        "react/": "https://esm.sh/react@^19.2.4/",
+        "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+      }
+    }
+    </script>
+  </head>
+  <body class="skin-classic">
+    <div id="root"></div>
+  </body>
+</html>

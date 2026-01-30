@@ -1,0 +1,8 @@
+{
+  "name": "My iPod - Pure Pixel",
+  "description": "Fullscreen high-fidelity pixel LCD with dithered media, mechanical click sounds, and haptic feedback.",
+  "requestFramePermissions": [],
+  "permissions": [
+    "vibrate"
+  ]
+}
